@@ -158,6 +158,36 @@ class SysArray:
         s = ''
         return s
 
+    def push_to_row(self, i, fresh):
+        val = self.row_fifos[i].pop()
+        self.row_fifos[i].appendleft(fresh)
+        return val
+
+    def print_row_fifos(self):
+        for f in self.row_fifos:
+            print(f)
+
+    def load_left_operand(self, a):
+        assert(a.num_rows() == self.nrows)
+
+        row_start = 0
+        for i in range(a.num_rows()):
+            # Push zero prefix
+            for z in range(row_start):
+                self.push_to_row(i, 0)
+                ind += 1
+
+            for j in range(a.num_cols()):
+                #print('pushing ', a.get(i, j))
+                self.push_to_row(i, a.get(i, j))
+                #print(self.row_fifos[i])
+
+            for z in range(self.fifo_depth - a.num_cols() - row_start):
+                self.push_to_row(i, 0)
+
+            row_start += 1
+                
+
 sa = SysArray(1, 2)
 
 print(sa)
@@ -184,3 +214,7 @@ print(b)
 print('Correct product')
 prod = mul(a, b)
 print(prod)
+
+sa.load_left_operand(a)
+sa.print_row_fifos()
+
