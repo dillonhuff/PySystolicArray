@@ -163,10 +163,19 @@ class SysArray:
         self.row_fifos[i].appendleft(fresh)
         return val
 
+    def push_to_col(self, i, fresh):
+        val = self.col_fifos[i].pop()
+        self.col_fifos[i].appendleft(fresh)
+        return val
+    
     def print_row_fifos(self):
         for f in self.row_fifos:
             print(f)
 
+    def print_col_fifos(self):
+        for f in self.col_fifos:
+            print(f)
+            
     def load_left_operand(self, a):
         assert(a.num_rows() == self.nrows)
 
@@ -175,18 +184,32 @@ class SysArray:
             # Push zero prefix
             for z in range(row_start):
                 self.push_to_row(i, 0)
-                ind += 1
 
             for j in range(a.num_cols()):
-                #print('pushing ', a.get(i, j))
                 self.push_to_row(i, a.get(i, j))
-                #print(self.row_fifos[i])
 
             for z in range(self.fifo_depth - a.num_cols() - row_start):
                 self.push_to_row(i, 0)
 
             row_start += 1
-                
+
+    def load_right_operand(self, b):
+        assert(b.num_cols() == self.ncols)
+
+        col_start = 0
+        for i in range(b.num_cols()):
+            # Push zero prefix
+            for z in range(col_start):
+                self.push_to_col(i, 0)
+
+            for j in range(a.num_cols()):
+                self.push_to_col(i, b.get(j, i))
+
+            for z in range(self.fifo_depth - b.num_cols() - col_start):
+                self.push_to_col(i, 0)
+
+            col_start += 1
+            
 
 sa = SysArray(1, 2)
 
@@ -217,4 +240,9 @@ print(prod)
 
 sa.load_left_operand(a)
 sa.print_row_fifos()
+
+print('cols')
+
+sa.load_right_operand(b)
+sa.print_col_fifos()
 
