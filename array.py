@@ -1,3 +1,5 @@
+from collections import deque
+
 class Matrix:
     def __init__(self, rows, cols):
         self.rows = {}
@@ -56,3 +58,35 @@ assert(m.get(0, 2) == 3)
 
 print(mul(m, m))
 
+class Tile:
+    def __init__(self):
+        self.stored_val = 0
+        self.down = 0
+        self.right = 0
+
+    def update_val(self, left, top):
+        self.stored_val = self.stored_val + left*top
+
+    def update_outputs(self, left, top):
+        self.down = top
+        self.right = left
+
+class SysArray:
+    def __init__(self, nrows, ncols):
+        self.row_fifos = []
+        for i in range(nrows):
+            self.row_fifos = deque()
+
+        for j in range(ncols):
+            self.col_fifos = deque()
+
+        self.tile_rows = {}
+        for i in range(nrows):
+            tile_row = {}
+            for j in range(ncols):
+                tile_row[j] = Tile()
+
+            self.tile_rows[i] = tile_row
+
+sa = SysArray(5, 5)
+            
