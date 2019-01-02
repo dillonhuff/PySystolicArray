@@ -34,6 +34,12 @@ def mul(a, b):
 
     c = Matrix(a.num_rows(), b.num_cols())
 
+    for i in range(c.num_rows()):
+        for j in range(c.num_cols()):
+            c.set(i, j, 0)
+            for k in range(a.num_cols()):
+                c.set(i, j, c.get(i, j) + a.get(i, k)*b.get(k, j))
+
     return c
     
 m = Matrix(5, 5)
@@ -41,8 +47,12 @@ m = Matrix(5, 5)
 print(m)
 
 m.set(0, 2, 3)
+m.set(1, 2, 1)
+m.set(0, 0, 4)
 
 print(m)
 
 assert(m.get(0, 2) == 3)
+
+print(mul(m, m))
 
