@@ -109,18 +109,20 @@ class SysArray:
         return self.tile_rows[i][j]
 
     def read_col(self, i):
-        print(self.col_fifos[i])
-        val = self.col_fifos[i].pop()
-        self.col_fifos[i].appendleft(0)
+        return self.col_fifos[i][-1]
+        # print(self.col_fifos[i])
+        # val = self.col_fifos[i].pop()
+        # self.col_fifos[i].appendleft(0)
 
-        return val
+        # return val
 
     def read_row(self, i):
-        print(self.row_fifos[i])
-        val = self.row_fifos[i].pop()
-        self.row_fifos[i].appendleft(0)
+        return self.row_fifos[i][-1]
+        # print(self.row_fifos[i])
+        # val = self.row_fifos[i].pop()
+        # self.row_fifos[i].appendleft(0)
 
-        return val
+        # return val
         
     def update(self):
         for i in range(self.nrows):
@@ -136,7 +138,7 @@ class SysArray:
                     left = self.get_tile(i, j - 1).right
 
 
-                self.get_tile(i, j).update_val(top, left)
+                self.get_tile(i, j).update_val(left, top)
 
 
         for i in range(self.nrows):
@@ -152,10 +154,19 @@ class SysArray:
                     left = self.get_tile(i, j - 1).right
 
 
-                self.get_tile(i, j).update_outputs(top, left)
+                self.get_tile(i, j).update_outputs(left, top)
+
+        for i in range(self.nrows):
+            self.push_to_row(i, 0)
+        for i in range(self.ncols):
+            self.push_to_col(i, 0)
                 
     def __str__(self):
         s = ''
+        for i in range(self.nrows):
+            for j in range(self.ncols):
+                s += str(self.get_tile(i, j).stored_val) + ' '
+            s += '\n'
         return s
 
     def push_to_row(self, i, fresh):
@@ -246,3 +257,48 @@ print('cols')
 sa.load_right_operand(b)
 sa.print_col_fifos()
 
+print('Initial sum')
+print(sa)
+
+sa.update()
+
+print('after first update values:')
+print(sa)
+print('row fifos')
+sa.print_row_fifos()
+
+print('col fifos')
+sa.print_col_fifos()
+
+sa.update()
+
+print(sa)
+
+
+print('row fifos')
+sa.print_row_fifos()
+
+print('col fifos')
+sa.print_col_fifos()
+
+sa.update()
+
+print(sa)
+
+
+print('row fifos')
+sa.print_row_fifos()
+
+print('col fifos')
+sa.print_col_fifos()
+
+sa.update()
+
+print(sa)
+
+
+print('row fifos')
+sa.print_row_fifos()
+
+print('col fifos')
+sa.print_col_fifos()
