@@ -23,7 +23,19 @@ class Matrix:
 
         return s
 
+    def num_rows(self):
+        return len(self.rows)
 
+    def num_cols(self):
+        return len(self.rows[0])
+
+def mul(a, b):
+    assert(a.num_cols() == b.num_cols())
+
+    c = Matrix(a.num_rows(), b.num_cols())
+
+    return c
+    
 m = Matrix(5, 5)
 
 print(m)
@@ -33,3 +45,4 @@ m.set(0, 2, 3)
 print(m)
 
 assert(m.get(0, 2) == 3)
+
